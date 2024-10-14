@@ -12,7 +12,7 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-const version = "1.1.6"
+const version = "1.1.7"
 
 var (
 	supportedInput = []string{".mp4", ".avi", ".mkv"}
@@ -72,16 +72,16 @@ var (
 
 	// GUI pointers
 	gui = Gui{
-		CurrentSpeed:  "Speed:",
-		Eta:           "ETA:",
+		CurrentSpeed:  "速度:",
+		Eta:           "预估时间:",
 		Progress:      0,
 		ProgressLabel: "",
 		TotalProgress: "",
-		ButtonLabel:   "Start",
-		Logs: "Version: Anime4K-GUI (" + version + ")\n" +
-			"Authors: mikigal (whole app + FFMPEG tweaks), Ethan (core FFMPEG stuff)\n" +
-			"Special thanks to bloc97 for Anime4K shaders\n" +
-			"Drag n' drop your video files into this window (supported extensions: mp4, avi, mkv)\n\n",
+		ButtonLabel:   "超分，启动！",
+		Logs: "版本: Anime4K-GUI (" + version + ")\n" +
+			"作者：mikigal（整个应用程序 + FFMPEG 调整）、Ethan（核心 FFMPEG 内容）、Chinohana（汉化）\n" +
+			"特别感谢 bloc97 提供的 Anime4K 着色器\n" +
+			"将您的视频文件拖放到此窗口（支持的扩展名：mp4、avi、mkv）\n\n",
 	}
 
 	// Internals
@@ -123,7 +123,7 @@ func startProcessing() {
 	outputFormat := strings.ToLower(outputFormats[settings.OutputFormat])
 
 	if len(animeList) == 0 {
-		logMessage("There's no videos on list, can not start. Drag files into this window to add video", false)
+		logMessage("列表上没有视频，无法开始。将文件拖入此窗口以添加视频", false)
 		g.Update()
 		return
 	}
@@ -140,7 +140,7 @@ func startProcessing() {
 	processing = true
 	resetUI()
 
-	logMessage("Started upscaling! Upscaled videos will be saved in original directory, with _upscaled suffix in files name", false)
+	logMessage("已开始超分！超分后的视频将保存在原始目录中，且文件名带有_upscaled的后缀", false)
 
 	logDebug("CV value: "+videoCodec, false)
 	g.Update()
@@ -169,13 +169,13 @@ func startProcessing() {
 			return
 		}
 
-		logDebug("Working directory: "+workingDirectory, false)
-		logDebug("Input path: "+anime.Path, false)
-		logDebug("Output path: "+outputPath, false)
-		logDebug("Target resolution: "+resolution.Format(), false)
-		logDebug("Shaders: "+shader.Path, false)
-		logDebug("Output format: "+outputFormat, false)
-		logDebug("FFMPEG command: .\\ffmpeg.exe\\ffmpeg.exe "+strings.Join(ffmpegParams, " "), false)
+		logDebug("工作目录: "+workingDirectory, false)
+		logDebug("输入路径: "+anime.Path, false)
+		logDebug("输出路径: "+outputPath, false)
+		logDebug("目标分辨率: "+resolution.Format(), false)
+		logDebug("着色器: "+shader.Path, false)
+		logDebug("输出格式: "+outputFormat, false)
+		logDebug("FFMPEG命令: .\\ffmpeg.exe\\ffmpeg.exe "+strings.Join(ffmpegParams, " "), false)
 		g.Update()
 
 		cmd := exec.Command(".\\ffmpeg\\ffmpeg.exe", ffmpegParams...)
@@ -209,13 +209,13 @@ func startProcessing() {
 
 		animeList[index].Status = Finished
 		resetUI()
-		logMessage(fmt.Sprintf("Finished processing %s", anime.Name), false)
+		logMessage(fmt.Sprintf("处理完成 %s", anime.Name), false)
 	}
 
 	gui.ButtonLabel = "Start"
 	processing = false
 	resetUI()
-	logMessage("Finished upscaling!", false)
+	logMessage("超分完毕！", false)
 	g.Update()
 }
 
@@ -244,6 +244,6 @@ func cancelProcessing() {
 	processing = false
 	gui.ButtonLabel = "Start"
 	resetUI()
-	logMessage("Cancelled upscaling!", false)
+	logMessage("任务取消！", false)
 	g.Update()
 }

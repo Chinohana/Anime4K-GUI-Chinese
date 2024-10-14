@@ -100,15 +100,16 @@ func buildUpscalingParams(anime Anime, resolution Resolution, shader Shader, out
 	}
 
 	params = append(params,
-		"-i", fmt.Sprintf("%s", anime.Path), // Path to input file
+		"-i", anime.Path, // Path to input file
 		"-init_hw_device", "vulkan",
 		"-vf", fmt.Sprintf("format=%s,hwupload,libplacebo=w=%d:h=%d:upscaler=ewa_lanczos:custom_shader_path=%s,format=%s",
 			anime.PixelFormat, resolution.Width, resolution.Height, shader.Path, anime.PixelFormat),
-
+	
 		"-c:a", "copy", // Copy all audio streams
 		"-c:s", "copy", // Copy all subtitles streams
 		"-c:d", "copy", // Copy all data streams
 	)
+	
 
 	for _, stream := range anime.Streams {
 		if !slices.Contains(codecsBlacklist, stream.CodecName) {
