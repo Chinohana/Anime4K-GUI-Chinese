@@ -136,7 +136,7 @@ func startProcessing() {
 
 	gui.Progress = 0
 	gui.ProgressLabel = ""
-	gui.ButtonLabel = "Cancel"
+	gui.ButtonLabel = "取消"
 	processing = true
 	resetUI()
 
@@ -212,7 +212,7 @@ func startProcessing() {
 		logMessage(fmt.Sprintf("处理完成 %s", anime.Name), false)
 	}
 
-	gui.ButtonLabel = "Start"
+	gui.ButtonLabel = "超分，启动！"
 	processing = false
 	resetUI()
 	logMessage("超分完毕！", false)
@@ -242,7 +242,7 @@ func cancelProcessing() {
 	}
 
 	processing = false
-	gui.ButtonLabel = "Start"
+	gui.ButtonLabel = "超分，启动！"
 	resetUI()
 	logMessage("任务取消！", false)
 	g.Update()
